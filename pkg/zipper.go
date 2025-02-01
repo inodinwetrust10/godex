@@ -104,3 +104,86 @@ func extractFile(file *zip.File, destination string) error {
 	_, err = io.Copy(outFile, zipFile)
 	return err
 }
+
+func ZipDirectory(outputFile string, directory string) error {
+	zipFile, err := os.Create(outputFile)
+	if err != nil {
+		return fmt.Errorf("failed to create zip file: %w", err)
+	}
+	defer zipFile.Close()
+
+	zipWriter := zip.NewWriter(zipFile)
+	defer zipWriter.Close()
+
+	absDir, err := filepath.Abs(directory)
+	if err != nil {
+		return fmt.Errorf("failed to get absolute path: %w", err)
+	}
+
+	// Ensure the input is a directory
+	fileInfo, err := os.Stat(absDir)
+	if err != nil {
+		return fmt.Errorf("failed to stat directory: %w", err)
+	}
+	if !fileInfo.IsDir() {
+		return fmt.Errorf("%s is not a directory", absDir)
+	}
+
+	baseDir := filepath.Dir(absDir) // Parent directory of the target directory
+
+	err = filepath.Walk(absDir, func(filePath string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// Get relative path from base directory to current file/directory
+		relPath, err := filepath.Rel(baseDir, filePath)
+		if err != nil {
+			return fmt.Errorf("failed to get relative path: %w", err)
+		}
+
+		header, err := zip.FileInfoHeader(info)
+		if err != nil {
+			return fmt.Errorf("failed to create header: %w", err)
+		}
+
+		// Set header name to preserve directory structure
+		header.Name = relPath
+
+		// Handle directories by adding trailing slash and using Store method
+		if info.IsDir() {
+			header.Name += "/"
+			header.Method = zip.Store
+		} else {
+			header.Method = zip.Deflate
+		}
+
+		writer, err := zipWriter.CreateHeader(header)
+		if err != nil {
+			return fmt.Errorf("failed to create writer: %w", err)
+		}
+
+		if info.IsDir() {
+			return nil // No content to write for directories
+		}
+
+		file, err := os.Open(filePath)
+		if err != nil {
+			return fmt.Errorf("failed to open file: %w", err)
+		}
+		defer file.Close()
+
+		_, err = io.Copy(writer, file)
+		if err != nil {
+			return fmt.Errorf("failed to copy file: %w", err)
+		}
+
+		fmt.Printf("Added: %s\n", relPath)
+		return nil
+	})
+	if err != nil {
+		return fmt.Errorf("error walking directory: %w", err)
+	}
+
+	return nil
+}

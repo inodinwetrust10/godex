@@ -7,17 +7,35 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"golang.org/x/oauth2"
 )
 
-const tokenFile = "token.json"
+const (
+	configDir     = ".config/gophile"
+	tokenFileName = "token.json"
+)
+
+func GetConfigDir() string {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatalf("Unable to find home directory: %v", err)
+	}
+	return filepath.Join(home, configDir)
+}
+
+func getTokenFilePath() string {
+	return filepath.Join(GetConfigDir(), tokenFileName)
+}
 
 func getClient(config *oauth2.Config) *http.Client {
-	tok, err := tokenFromFile(tokenFile)
+	tokenPath := getTokenFilePath()
+
+	tok, err := tokenFromFile(tokenPath)
 	if err != nil {
 		tok = getTokenFromWeb(config)
-		saveToken(tokenFile, tok)
+		saveToken(tokenPath, tok)
 	}
 	return config.Client(context.Background(), tok)
 }
@@ -54,6 +72,11 @@ func tokenFromFile(file string) (*oauth2.Token, error) {
 }
 
 func saveToken(path string, token *oauth2.Token) {
+	dir := filepath.Dir(path)
+	if err := os.MkdirAll(dir, 0700); err != nil {
+		log.Fatalf("Unable to create config directory: %v", err)
+	}
+
 	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
 	if err != nil {
 		log.Fatalf("Unable to cache token: %v", err)

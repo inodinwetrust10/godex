@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"time"
 
 	"golang.org/x/oauth2/google"
@@ -39,31 +40,33 @@ func formatBytes(b int64) string {
 
 func UploadFile(filePath string) error {
 	ctx := context.Background()
-	b, err := os.ReadFile("credentials.json")
+	configPath := filepath.Join(GetConfigDir(), "credentials.json")
+
+	b, err := os.ReadFile(configPath)
 	if err != nil {
-		return err
+		return fmt.Errorf("error reading credentials.json: %v", err)
 	}
 
 	config, err := google.ConfigFromJSON(b, drive.DriveFileScope)
 	if err != nil {
-		return err
+		return fmt.Errorf("error parsing credentials.json: %v", err)
 	}
 
 	client := getClient(config)
 	srv, err := drive.NewService(ctx, option.WithHTTPClient(client))
 	if err != nil {
-		return err
+		return fmt.Errorf("error creating Drive service: %v", err)
 	}
 
 	file, err := os.Open(filePath)
 	if err != nil {
-		return err
+		return fmt.Errorf("error opening file: %v", err)
 	}
 	defer file.Close()
 
 	fileInfo, err := file.Stat()
 	if err != nil {
-		return err
+		return fmt.Errorf("error getting file info: %v", err)
 	}
 
 	pr := &ProgressReader{
@@ -91,15 +94,14 @@ func UploadFile(filePath string) error {
 		}
 	}()
 
-	driveFile := &drive.File{
-		Name: fileInfo.Name(),
-	}
+	driveFile := &drive.File{Name: fileInfo.Name()}
 
-	_, err = srv.Files.Create(driveFile).
-		Media(pr).
-		Context(ctx).
-		Do()
+	_, err = srv.Files.Create(driveFile).Media(pr).Context(ctx).Do()
 
 	done <- true
-	return err
+	if err != nil {
+		return fmt.Errorf("error uploading file: %v", err)
+	}
+
+	return nil
 }
