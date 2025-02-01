@@ -48,21 +48,21 @@ cd goPhile
 ### **3️⃣ Build the Binary**
 
 ```sh
-go build -o gophile
+go build -o goPhile
 ```
 
-This will generate an executable named `gophile` in the same directory.
+This will generate an executable named `goPhile` in the same directory.
 
 To install it system-wide, move it to `/usr/local/bin`:
 
 ```sh
-sudo mv gophile /usr/local/bin/
+sudo mv goPhile /usr/local/bin/
 ```
 
 Now you can run:
 
 ```sh
-gophile --help
+goPhile --help
 ```
 
 ### **4️⃣ Cross-Compile for Different Systems**
@@ -71,13 +71,13 @@ If you need to build for multiple platforms:
 
 ```sh
 # Linux (x86_64)
-GOOS=linux GOARCH=amd64 go build -o gophile-linux
+GOOS=linux GOARCH=amd64 go build -o goPhile-linux
 
 # macOS (x86_64)
-GOOS=darwin GOARCH=amd64 go build -o gophile-macos
+GOOS=darwin GOARCH=amd64 go build -o goPhile-macos
 
 # macOS (Apple Silicon - M1/M2)
-GOOS=darwin GOARCH=arm64 go build -o gophile-macos-arm
+GOOS=darwin GOARCH=arm64 go build -o goPhile-macos-arm
 ```
 
 ### **5️⃣ Install Dependencies (If Any)**
@@ -99,13 +99,13 @@ go get -u ./...
 Once built, run:
 
 ```sh
-./gophile
+./goPhile
 ```
 
 Or if installed system-wide:
 
 ```sh
-gophile
+goPhile
 ```
 
 ## Usage
@@ -280,7 +280,7 @@ Before using the backup command:
    - Create a project in Google Cloud Console
    - Enable Google Drive API
    - Create credentials (OAuth 2.0 Client ID (Desktop app))
-   - Download the client configuration file and rename it credentials.json and place it in ~/.config/gophile
+   - Download the client configuration file and rename it credentials.json and place it in ~/.config/goPhile
 
 2. First-time configuration:
    - Run any backup command
@@ -311,7 +311,7 @@ generate the autocompletion script for `goPhile` for the specified shell.
 ## Usage
 
 ```sh
-gophile completion [command]
+goPhile completion [command]
 ```
 
 ## Available Commands
