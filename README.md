@@ -42,7 +42,7 @@ go version
 
 ```sh
 git clone https://github.com/inodinwetrust10/goPhile
-cd gophile
+cd goPhile
 ```
 
 ### **3️⃣ Build the Binary**
