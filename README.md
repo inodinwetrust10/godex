@@ -280,7 +280,7 @@ Before using the backup command:
    - Create a project in Google Cloud Console
    - Enable Google Drive API
    - Create credentials (OAuth 2.0 Client ID (Desktop app))
-   - Download the client configuration file and rename it credentials.json and place it in ~/.config/goPhile
+   - Download the client configuration file and rename it credentials.json and place it in ~/.config/gophile
 
 2. First-time configuration:
    - Run any backup command
