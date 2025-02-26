@@ -1,4 +1,4 @@
-module github.inodinwetrust10/goPhile
+module github.inodinwetrust10/godex
 
 go 1.23.4
 

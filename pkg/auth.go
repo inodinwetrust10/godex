@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	configDir     = ".config/gophile"
+	configDir     = ".config/godex"
 	tokenFileName = "token.json"
 )
 

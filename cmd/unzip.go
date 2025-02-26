@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.inodinwetrust10/goPhile/pkg"
+	"github.inodinwetrust10/godex/pkg"
 )
 
 var unzipCmd = &cobra.Command{

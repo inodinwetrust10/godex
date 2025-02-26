@@ -14,16 +14,16 @@ var (
 	verbose *bool
 	// rootCmd represents the base command when called without any subcommands
 	rootCmd = &cobra.Command{
-		Use:   "goPhile",
+		Use:   "godex",
 		Short: "A powerful file management CLI tool",
-		Long:  `goPhile is a file management CLI built in Go, designed for advanced file operations.It supports zipping, renaming, encryption, file backup ,versioning and much more with a clean and extensible interface.`,
+		Long:  `godex is a file management CLI built in Go, designed for advanced file operations.It supports zipping, renaming, encryption, file backup ,versioning and much more with a clean and extensible interface.`,
 		// Uncomment the following line if your bare application
 		// has an action associated with it:
 		Run: func(cmd *cobra.Command, args []string) {
 			if *verbose {
 				fmt.Println("Verbose mode enabled")
 			}
-			fmt.Println("Welcome to goPhile CLI! Use --help to see available commands.")
+			fmt.Println("Welcome to godex CLI! Use --help to see available commands.")
 		},
 	}
 )
@@ -42,7 +42,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.goPhile.yaml)")
+	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.godex.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
