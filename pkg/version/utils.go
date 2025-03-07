@@ -8,6 +8,8 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+
+	"github.com/sergi/go-diff/diffmatchpatch"
 )
 
 // ///////////////////////////////////////////////////////
@@ -75,4 +77,52 @@ func GenerateVersionID(filePath string) (string, error) {
 
 	versionID := fmt.Sprintf("v%d", nextVersion)
 	return versionID, nil
+}
+
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+func checkDiffs(filePath1, filePath2 string) (bool, error) {
+	content1, err := os.ReadFile(filepath.Clean(filePath1))
+	if err != nil {
+		return false, fmt.Errorf("Error reading the file1 %w", err)
+	}
+
+	content2, err := os.ReadFile(filepath.Clean(filePath2))
+	if err != nil {
+		return false, fmt.Errorf("Error reading the file2 %w", err)
+	}
+
+	dmp := diffmatchpatch.New()
+
+	diffs := dmp.DiffMain(string(content1), string(content2), false)
+
+	return !(len(diffs) == 1 && diffs[0].Type == diffmatchpatch.DiffEqual), nil
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+func returnLastFilePath(jsonDirPath string) string {
+	filePath := filepath.Join(jsonDirPath, "version.json")
+	var elements []VersionMetaData
+
+	if _, err := os.Stat(filePath); err != nil {
+		if os.IsNotExist(err) {
+			return "No file found"
+		}
+		return ""
+	}
+	file, err := os.ReadFile(filePath)
+	if err != nil {
+		return ""
+	}
+	err = json.Unmarshal(file, &elements)
+	if err != nil {
+		return ""
+	}
+	num := len(elements)
+	filename := fmt.Sprintf("v%d", num)
+	returnPath := filepath.Join(jsonDirPath, filename)
+	return returnPath
 }

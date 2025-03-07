@@ -37,6 +37,9 @@ func createVersion(cmd *cobra.Command, args []string) error {
 		return err
 	}
 	meta, err := version.CreateFile(filePath, id, "First")
+	if err != nil {
+		return err
+	}
 	fmt.Println(meta.ID)
 	return nil
 }

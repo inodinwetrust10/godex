@@ -13,12 +13,12 @@ import (
 
 // //////////////////////////////////////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////////////////////////////////////
-func saveFile(filePath string, versionID string, message string) (VersionMetaData, error) {
-	versionPathDir, err := getVersionPath(filePath)
-	if err != nil {
-		return VersionMetaData{}, fmt.Errorf("failed to load the version directory path: %w", err)
-	}
-
+func saveFile(
+	filePath,
+	versionID,
+	message,
+	versionPathDir string,
+) (VersionMetaData, error) {
 	versionFilePath := filepath.Join(versionPathDir, versionID)
 
 	sourceFile, err := os.Open(filePath)
@@ -67,12 +67,7 @@ func saveFile(filePath string, versionID string, message string) (VersionMetaDat
 // //////////////////////////////////////////////////////////////////////////////////////
 
 func saveMetaData(filePath string, metadata VersionMetaData) error {
-	dirPath, err := getVersionPath(filePath)
-	if err != nil {
-		return err
-	}
-	fullPath := filepath.Join(dirPath, "version.json")
-
+	fullPath := filepath.Join(filePath, "version.json")
 	var metadataEntries []VersionMetaData
 
 	if _, err := os.Stat(fullPath); err == nil {
@@ -89,6 +84,7 @@ func saveMetaData(filePath string, metadata VersionMetaData) error {
 			}
 			metadataEntries = append(metadataEntries, singleMetadata)
 		}
+		metadataEntries = append(metadataEntries, metadata)
 	} else {
 		// File doesnt exist start with just the new metadata
 		metadataEntries = []VersionMetaData{metadata}
