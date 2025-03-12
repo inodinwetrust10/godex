@@ -14,7 +14,7 @@ import (
 
 // ///////////////////////////////////////////////////////
 // ///////////////////////////////////////////////////////
-func getVersionPath(filePath string) (string, error) {
+func GetVersionPath(filePath string) (string, error) {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		return "", fmt.Errorf("could not get home directory: %w", err)
@@ -37,7 +37,7 @@ func getVersionPath(filePath string) (string, error) {
 /////////////////////////////////////////////////////////////////////
 
 func GenerateVersionID(filePath string) (string, error) {
-	dirPath, err := getVersionPath(filePath)
+	dirPath, err := GetVersionPath(filePath)
 	if err != nil {
 		return "", err
 	}
@@ -83,6 +83,9 @@ func GenerateVersionID(filePath string) (string, error) {
 /////////////////////////////////////////////////////////////////////////////
 
 func checkDiffs(filePath1, filePath2 string) (bool, error) {
+	if filePath2 == "No file found" {
+		return true, nil
+	}
 	content1, err := os.ReadFile(filepath.Clean(filePath1))
 	if err != nil {
 		return false, fmt.Errorf("Error reading the file1 %w", err)
