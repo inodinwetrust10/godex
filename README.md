@@ -10,6 +10,33 @@ godex is a powerful command-line file manager that simplifies file operations wi
 - **File Versioning**: Create, list, compare, restore and remove file versions
 - **Shell Completion**: Built-in shell completion script generation
 
+## Quick Install
+
+For a quick installation on Linux or macOS systems, you can use our install script:
+
+```sh
+# Download the install script
+curl -O https://raw.githubusercontent.com/inodinwetrust10/godex/main/install.sh
+
+# Make it executable
+chmod +x install.sh
+
+# Run the installer
+./install.sh
+```
+
+The installer will:
+
+- Automatically detect your system architecture and OS
+- Download the latest release from GitHub
+- Install the binary to /usr/local/bin
+- Set up shell completion for bash, zsh, or fish
+- Create necessary config directories
+
+The installation script features a user-friendly interface with progress tracking and colored output. If an existing installation is detected, the script will ask for confirmation before replacing it.
+
+After installation, you can run `godex --help` to verify the installation was successful.
+
 ## Build from Source
 
 ### **1️⃣ Install Go (1.21 or later)**
@@ -446,51 +473,51 @@ Before using the backup command:
 
 ## Dependencies
 
-- Go 1.16+
-- Google Drive API client library
+- Go 1.16+ (for building from source)
+- Git (for building from source)
 
-# godex Autocompletion
+## Autocompletion
 
-generate the autocompletion script for `godex` for the specified shell.
+The installation script automatically sets up shell completion for bash, zsh, and fish. If you need to manually set it up, you can use the following instructions.
 
-## Usage
+### Usage
 
 ```sh
 godex completion [command]
 ```
 
-## Available Commands
+### Available Commands
 
 - **bash** Generate the autocompletion script for Bash
 - **fish** Generate the autocompletion script for Fish
 - **powershell** Generate the autocompletion script for PowerShell
 - **zsh** Generate the autocompletion script for Zsh
 
-## Flags
+### Flags
 
 ```
 -h, --help   help for completion
 ```
 
-## Installation
+### Manual Installation
 
 To enable autocompletion for your shell, run the appropriate command below:
 
-### Bash
+#### Bash
 
 ```sh
 echo 'source <(godex completion bash)' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-### Zsh
+#### Zsh
 
 ```sh
 echo 'source <(godex completion zsh)' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-### Fish
+#### Fish
 
 ```sh
 godex completion fish | source
@@ -500,24 +527,6 @@ To make it persistent:
 
 ```sh
 godex completion fish > ~/.config/fish/completions/godex.fish
-```
-
-### PowerShell
-
-```powershell
-godex completion powershell | Out-String | Invoke-Expression
-```
-
-To make it persistent, add it to your PowerShell profile:
-
-```powershell
-godex completion powershell > $PROFILE
-```
-
-For more details, use:
-
-```sh
-godex completion [command] --help
 ```
 
 ## Contributing
