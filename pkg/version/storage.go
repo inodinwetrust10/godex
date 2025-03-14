@@ -193,7 +193,7 @@ func RestoreFile(filePath, versionID, originalFilePath string) error {
 		return err
 	}
 	var metadata VersionMetaData
-	for _, fileMetaData := range allVersionMetaData {
+	for _, fileMetaData := range *allVersionMetaData {
 		if fileMetaData.ID == versionID {
 			metadata = fileMetaData
 			break

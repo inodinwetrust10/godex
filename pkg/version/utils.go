@@ -106,7 +106,7 @@ func checkDiffs(filePath1, filePath2 string) (bool, error) {
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-func returnLastFilePath(jsonDirPath string) string {
+func ReturnLastFilePath(jsonDirPath string) string {
 	filePath := filepath.Join(jsonDirPath, "version.json")
 	var elements []VersionMetaData
 
@@ -128,4 +128,41 @@ func returnLastFilePath(jsonDirPath string) string {
 	filename := fmt.Sprintf("v%d", num)
 	returnPath := filepath.Join(jsonDirPath, filename)
 	return returnPath
+}
+
+// //////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////
+func PrintDiffResults(diffRes *DiffResult) {
+	if diffRes.Identical {
+		fmt.Println("Files are identical")
+		return
+	}
+
+	fmt.Printf("Diff Type: %s\n", diffRes.DiffType)
+
+	if diffRes.Message != "" {
+		fmt.Printf("Message: %s\n", diffRes.Message)
+	}
+
+	if len(diffRes.DiffLines) == 0 {
+		fmt.Println("No line differences found")
+		return
+	}
+
+	fmt.Println("\nDifferences:")
+	fmt.Println("-------------------------------------------")
+
+	for _, diff := range diffRes.DiffLines {
+		fmt.Printf("Line %d:\n", diff.LineNumber)
+		if diff.Line1 == "" {
+			fmt.Printf("+ %s\n", diff.Line2)
+		} else if diff.Line2 == "" {
+			fmt.Printf("- %s\n", diff.Line1)
+		} else {
+			fmt.Printf("- %s\n+ %s\n", diff.Line1, diff.Line2)
+		}
+		fmt.Println("-------------------------------------------")
+	}
+
+	fmt.Printf("\nTotal differences: %d\n", len(diffRes.DiffLines))
 }

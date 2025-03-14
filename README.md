@@ -1,12 +1,13 @@
 # godex
 
-godex is a powerful command-line file manager that simplifies file operations with features for searching, compression, and cloud backup integration.
+godex is a powerful command-line file manager that simplifies file operations with features for searching, compression, cloud backup integration, and file versioning.
 
 ## Features
 
 - **File Search**: Fast and flexible file search functionality
 - **Compression Tools**: Zip and unzip files with ease
 - **Google Drive Backup**: Seamless cloud backup integration
+- **File Versioning**: Create, list, compare, restore and remove file versions
 - **Shell Completion**: Built-in shell completion script generation
 
 ## Build from Source
@@ -123,6 +124,7 @@ godex [command]
 - `zip`: Zip one or more files into a .zip archive
 - `unzip`: Unzip a .zip archive to a destination directory
 - `backup`: Backup file to Google Drive
+- `version`: File versioning operations
 - `completion`: Generate the autocompletion script for the specified shell
 - `help`: Help about any command
 
@@ -247,6 +249,149 @@ Unzip to new directory:
 
 ```bash
 godex unzip project-backup.zip ./project-restored
+```
+
+### Version Command
+
+The version command provides file versioning capabilities, allowing you to create, list, compare, restore, and remove versions of your files.
+
+```bash
+godex version [command]
+```
+
+#### Available Version Commands
+
+- `create`: Create a new version of a file
+- `list`: List all versions of a file
+- `restore`: Restore your file to a specific version
+- `diff`: Check differences between two files or between a file and its version
+- `remove`: Remove a specific version or all versions of a file
+
+#### Create Command
+
+Create a new version of a file with an optional commit message.
+
+```bash
+godex version create [filepath]
+```
+
+##### Create Flags
+
+```bash
+-m, --message string   Add a commit message (default "commit")
+-h, --help            Help for create
+```
+
+##### Create Examples
+
+Create a version with default commit message:
+
+```bash
+godex version create document.txt
+```
+
+Create a version with custom commit message:
+
+```bash
+godex version create document.txt -m "Added section 3"
+```
+
+#### List Command
+
+List all versions of a file with their version IDs and commit messages.
+
+```bash
+godex version list [filepath]
+```
+
+##### List Flags
+
+```bash
+-h, --help   Help for list
+```
+
+##### List Examples
+
+```bash
+godex version list document.txt
+```
+
+#### Restore Command
+
+Restore a file to a specific version using the version ID.
+
+```bash
+godex version restore [filepath] [versionID]
+```
+
+##### Restore Flags
+
+```bash
+-h, --help   Help for restore
+```
+
+##### Restore Examples
+
+```bash
+godex version restore document.txt v2
+```
+
+#### Diff Command
+
+Check differences between two files or between a file and its last version.
+
+```bash
+godex version diff [filepath1] [filepath2]
+```
+
+##### Diff Flags
+
+```bash
+-d, --default   Compare with the last version
+-h, --help      Help for diff
+```
+
+##### Diff Examples
+
+Compare two specific files:
+
+```bash
+godex version diff document-v1.txt document-v2.txt
+```
+
+Compare a file with its last version:
+
+```bash
+godex version diff document.txt -d
+```
+
+#### Remove Command
+
+Remove a specific version or all versions of a file.
+
+```bash
+godex version remove [filepath]
+```
+
+##### Remove Flags
+
+```bash
+-v, --version string   Remove a specific version
+-h, --help            Help for remove
+```
+
+##### Remove Examples
+
+Remove a specific version:
+
+```bash
+godex version remove document.txt -v v2
+```
+
+Remove all versions:
+
+```bash
+godex version remove document.txt
 ```
 
 ### Backup Command

@@ -15,3 +15,16 @@ type GlobalIndex struct {
 	Versions         []string
 	LastUpdatedAt    time.Time
 }
+
+type DiffResult struct {
+	Identical bool
+	DiffType  string
+	Message   string
+	DiffLines []LineDiff
+}
+
+type LineDiff struct {
+	LineNumber int
+	Line1      string
+	Line2      string
+}

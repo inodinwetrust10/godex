@@ -16,7 +16,7 @@ var (
 	rootCmd = &cobra.Command{
 		Use:   "godex",
 		Short: "A powerful file management CLI tool",
-		Long:  `godex is a file management CLI built in Go, designed for advanced file operations.It supports zipping, renaming, encryption, file backup ,versioning and much more with a clean and extensible interface.`,
+		Long:  `godex is a file management CLI built in Go, designed for advanced file operations.It supports zipping, file backup ,versioning and much more with a clean and extensible interface.`,
 		// Uncomment the following line if your bare application
 		// has an action associated with it:
 		Run: func(cmd *cobra.Command, args []string) {
