@@ -143,9 +143,11 @@ func seeDiff(cmd *cobra.Command, args []string) error {
 			return err
 		}
 		fileDir, err := version.GetVersionPath(filePath)
-		lastVersionPath := version.ReturnLastFilePath(fileDir)
+		lastVersionPath := version.ReturnLastSecondFilePath(fileDir)
 		if lastVersionPath == "No file found" {
 			return fmt.Errorf("No last version found. Make a version first to check")
+		} else if lastVersionPath == "No previous version found to check" {
+			return fmt.Errorf("No previous version found to check")
 		}
 
 		diffRes, err = version.FileDiff(filePath, lastVersionPath)

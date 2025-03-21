@@ -166,3 +166,32 @@ func PrintDiffResults(diffRes *DiffResult) {
 
 	fmt.Printf("\nTotal differences: %d\n", len(diffRes.DiffLines))
 }
+
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+
+func ReturnLastSecondFilePath(jsonDirPath string) string {
+	filePath := filepath.Join(jsonDirPath, "version.json")
+	var elements []VersionMetaData
+	if _, err := os.Stat(filePath); err != nil {
+		if os.IsNotExist(err) {
+			return "No file found"
+		}
+		return ""
+	}
+	file, err := os.ReadFile(filePath)
+	if err != nil {
+		return ""
+	}
+	err = json.Unmarshal(file, &elements)
+	if err != nil {
+		return ""
+	}
+	if len(elements) < 2 {
+		return "No previous version found to check"
+	}
+	secondLastVersionData := elements[len(elements)-2]
+	filename := secondLastVersionData.ID
+	returnPath := filepath.Join(jsonDirPath, filename)
+	return returnPath
+}
